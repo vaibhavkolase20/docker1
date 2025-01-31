@@ -7,6 +7,7 @@
 # this is the commnd for run the mysql image
   1) docker run -d -e MYSQL_ROOT_PASSWORD=root mysql
   docker exec -it e3d3ca194b64 bash == to access this mysql container
+  mysql -u root -p == to run mysqul
   
 
 
