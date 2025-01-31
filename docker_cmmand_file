@@ -1,0 +1,12 @@
+# docker basic command
+
+  1) docker ps == to show conatainer list
+  2) docker pull == to pull images trought docker hub
+  3) docker images == to show list of images
+
+# this is the commnd for run the mysql image
+  1) docker run -e MYSQL_ROOT_PASSWORD=root mysql
+
+
+# if you want to stop your container then you use
+2) docker stop container id
