@@ -5,7 +5,10 @@
   3) docker images == to show list of images
 
 # this is the commnd for run the mysql image
-  1) docker run -e MYSQL_ROOT_PASSWORD=root mysql
+  1) docker run -d -e MYSQL_ROOT_PASSWORD=root mysql
+  docker exec -it e3d3ca194b64 bash == to access this mysql container
+  
+
 
 
 # if you want to stop your container then you use
