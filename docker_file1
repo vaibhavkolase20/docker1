@@ -1,0 +1,17 @@
+# 1) create one directory and clone below repogetory in this directory
+
+  https://github.com/LondheShubham153/simple-java-docker.git  == this is the url of repogetory
+
+  1) build this file using below command
+  docker build -t java-app
+
+  2) after that run this image using
+  ocker run java-app 
+
+
+
+# 2) this is the secound project and 2nd repogetory url
+
+  https://github.com/LondheShubham153/flask-app-ecs.git
+
+https://github.com/LondheShubham153/flask-app-ecs == this is the shubham londhe repogetory
