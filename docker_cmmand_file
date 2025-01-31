@@ -8,6 +8,18 @@
   1) docker run -d -e MYSQL_ROOT_PASSWORD=root mysql
   docker exec -it e3d3ca194b64 bash == to access this mysql container
   mysql -u root -p == to run mysqul
+ CREATE DATABASE my_new_db; == to create database
+USE <database_name>;=== to acess created database
+
+create table  using this information
+CREATE TABLE my_table (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
   
 
 
