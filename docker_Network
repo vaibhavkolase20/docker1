@@ -1,0 +1,20 @@
+# https://github.com/LondheShubham153/two-tier-flask-app.git == this is repogetory you clone it in your machine
+# now build this file using command
+  docker build -t two-tier-backend .
+
+# how to run this images using below cmmand
+
+  docker run -d -p 5000:5000 -e MYSQL_HOST=mysql -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e MYSQL_DB=devops two-tier-backend:latest
+
+# after using this command yiu will check container but container will not see why because you don't have same network so you have make networke 
+
+1) docker network create two-tier -d bridge == this command use for create networck
+
+2) pull mysql image using command == docker pull mysql
+
+3) docker run -d --name mysql --network two-tier -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=devops mysql == uswe this commnd for give network to this conatainer
+
+4) after that take acess of your my sql usinc command === docker exec -it cotainer id bash
+    
+
+    
