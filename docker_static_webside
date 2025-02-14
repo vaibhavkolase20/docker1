@@ -1,0 +1,105 @@
+# **Docker Nginx Deployment with Free CSS Template**
+
+## **Step 1: Install Docker**
+To install Docker on your system, run the following command:
+```sh
+apt-get update && apt-get install docker.io -y
+```
+
+## **Step 2: Create and Run an Nginx Container**
+Create an Nginx container and expose it on port **8080**:
+```sh
+docker run -d --name my-nginx -p 8080:80 nginx
+```
+
+## **Step 3: Verify the Running Container**
+Check if the Nginx container is running:
+```sh
+docker ps
+```
+
+## **Step 4: Download a Free CSS Template**
+Find a free CSS template from [Free CSS](https://www.free-css.com) and copy the **download URL**. Then, run the following command to download the template:
+```sh
+wget -O finexo.zip https://www.free-css.com/assets/files/free-css-templates/download/page296/finexo.zip
+```
+
+## **Step 5: Create and Verify a Directory for Extraction**
+Create a directory to store the extracted files:
+```sh
+mkdir finexo-html
+cd finexo-html
+```
+Verify that the directory exists:
+```sh
+ls
+```
+
+## **Step 6: Install the Unzip Package**
+If `unzip` is not installed, install it using:
+```sh
+apt-get install unzip -y
+```
+
+## **Step 7: Extract the Downloaded Template**
+```sh
+unzip ../finexo.zip -d .
+```
+
+## **Step 8: Copy Extracted Files into the Nginx Container**
+Replace `<container_id>` with your actual container ID:
+```sh
+docker cp finexo-html/. <container_id>:/usr/share/nginx/html/
+```
+To find your container ID, use:
+```sh
+docker ps
+```
+
+## **Step 9: Access the Container Shell**
+To enter the container:
+```sh
+docker exec -it <container_id> /bin/sh
+```
+
+## **Step 10: Move Files to the Correct Location**
+Navigate to the HTML directory inside the container:
+```sh
+cd /usr/share/nginx/html
+```
+Move all files to the main Nginx directory:
+```sh
+mv ./* ../
+```
+
+## **Step 11: Configure Security Group for EC2 Access**
+If running on an **AWS EC2 instance**, allow HTTP traffic by adding inbound rules for **ports 80 and 8080**:
+1. Go to **AWS Console → EC2 → Security Groups**.
+2. Find your **EC2 security group**.
+3. Click **Edit Inbound Rules** and add:
+   - **Rule 1:** Type: **HTTP**, Protocol: **TCP**, Port: **80**, Source: **0.0.0.0/0**.
+   - **Rule 2:** Type: **Custom TCP**, Protocol: **TCP**, Port: **8080**, Source: **0.0.0.0/0**.
+
+## **Step 12: Access the Website in Your Browser**
+Copy your **EC2 public IP** and open it in your browser:
+```sh
+http://<your-ec2-public-ip>:8080
+```
+
+If everything is set up correctly, you should see your new website! 🚀
+
+---
+
+### **Troubleshooting**
+- If the page does not load, restart the container:
+  ```sh
+  docker restart my-nginx
+  ```
+- Check Nginx logs for errors:
+  ```sh
+  docker logs my-nginx
+  ```
+- Ensure your security group allows HTTP traffic on **ports 80 and 8080**.
+
+Now your website is live! 🎉 Let me know if you need any modifications.
+
