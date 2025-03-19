@@ -1,0 +1,66 @@
+# 1  lounch ubuntu instace
+# 2  install docker using command
+  apt-get install docker.io -y
+
+# 3 install docker compose using command
+  sudo apt update && sudo apt upgrade -y
+  sudo apt install -y curl jq
+  sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+  docker-compose --version
+
+# 4 clone the repogetory
+  git clone https://github.com/LondheShubham153/Expenses-Tracker-WebApp.git
+# 5 go to this repogetory and build image using follwing command
+   docker build -t expensesapp .
+# 6 delete docker-compose.yml file and create new which will be same name and put following code in this derectory
+    version: "3.8"
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Test@123
+      MYSQL_DATABASE: expenses_tracker
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - appbridge
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pTest@123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: always
+
+  mainapp:
+    image: snehcreate/expensetracker_v3
+    container_name: Expensetracker
+    environment:
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Test@123
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/expenses_tracker?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"
+    ports:
+      - "8080:8080"
+    networks:
+      - appbridge
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+
+networks:
+  appbridge:
+
+volumes:
+  mysql-data:
+
+# 7 use followind command to put this code
+  docker-compose up
+
+# 8 after adding port number to your instance like 8080 andd 3306 
+
+# this is the link of this project
+  https://chatgpt.com/canvas/shared/67dab7f773c081919756f027dffa6ea6
