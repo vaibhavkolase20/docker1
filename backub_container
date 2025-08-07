@@ -1,0 +1,209 @@
+  # Here is your complete and clear project documentation for the Docker-based PHP-Apache + MySQL project, including:
+
+✅ All setup steps
+✅ Docker & Docker Compose installation
+✅ All necessary configurations
+✅ Common errors and their solutions
+✅ Final verification steps
+
+✅ Project Title: PHP-Apache + MySQL using Docker Compose
+🎯 Objective:
+To deploy a web form inside an Apache-PHP container that saves user-submitted data to a MySQL container. All setup should be reproducible by anyone using Docker and Docker Compose.
+
+📦 Step 1: Install Docker & Docker Compose
+🔧 Install Docker:
+bash
+Copy
+Edit
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+🔧 Install Docker Compose:
+bash
+Copy
+Edit
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+📁 Step 2: Create Project Directory Structure
+bash
+Copy
+Edit
+mkdir milk_project
+cd milk_project
+
+mkdir website
+cd website
+
+touch form.html submit.php
+✍️ form.html
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Milk Project Form</h2>
+  <form action="submit.php" method="post">
+    Name: <input type="text" name="name"><br><br>
+    <input type="submit">
+  </form>
+</body>
+</html>
+✍️ submit.php
+php
+Copy
+Edit
+<?php
+$servername = "mysql-backend";
+$username = "root";
+$password = "rootpassword";
+$dbname = "mydb";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+$name = $_POST['name'];
+$sql = "INSERT INTO users (name) VALUES ('$name')";
+
+if ($conn->query($sql) === TRUE) {
+  echo "Message saved successfully!";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
+?>
+📄 Step 3: Create Dockerfile
+Dockerfile
+Copy
+Edit
+FROM php:7.4-apache
+
+RUN docker-php-ext-install mysqli
+
+COPY ./website/ /var/www/html/
+🐳 Step 4: Create docker-compose.yml
+yaml
+Copy
+Edit
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: php-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    volumes:
+      - ./website:/var/www/html
+
+  db:
+    image: mysql:5.7
+    container_name: mysql-backend
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydb
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+🔥 Step 5: Start the Project
+bash
+Copy
+Edit
+docker-compose up --build -d
+🛠️ Step 6: Access Webpage
+Open browser:
+http://<your-ec2-public-ip>:8080
+
+🗃️ Step 7: Create Table in MySQL Container
+Enter MySQL container:
+
+bash
+Copy
+Edit
+docker exec -it mysql-backend bash
+mysql -u root -p
+# Enter: rootpassword
+Inside MySQL shell:
+
+sql
+Copy
+Edit
+USE mydb;
+CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100));
+✅ Step 8: Test the Form
+Fill the form.
+
+Submit.
+
+You should see: Message saved successfully!
+
+🔎 Step 9: Verify Data in MySQL
+bash
+Copy
+Edit
+docker exec -it mysql-backend bash
+mysql -u root -p
+USE mydb;
+SELECT * FROM users;
+❗ Common Errors & Solutions
+❌ Apache shows "Forbidden" or "You don't have permission to access":
+Solution:
+
+Ensure correct permissions:
+
+bash
+Copy
+Edit
+chmod -R 755 ./website
+❌ PHP Error: Class 'mysqli' not found
+Reason: mysqli extension is not installed.
+
+Solution:
+Install in Dockerfile:
+
+Dockerfile
+Copy
+Edit
+RUN docker-php-ext-install mysqli
+Rebuild container:
+
+bash
+Copy
+Edit
+docker-compose down
+docker-compose up --build -d
+❌ Container exits immediately:
+Solution:
+
+Check logs:
+
+bash
+Copy
+Edit
+docker logs <container_id>
+✅ Project Success Message
+"Message saved successfully!"
+This confirms the integration between Apache, PHP, and MySQL is working!
+
+📦 How to Stop & Start Again
+bash
+Copy
+Edit
+docker-compose down       # Stop
+docker-compose up -d      # Start
+If you want, I can generate this as a PDF file too. Would you like that? 
+
+
+
+    # This is a link of this project.....
+https://chatgpt.com/share/68946662-2dcc-800f-8279-99d3d8fd61ad
