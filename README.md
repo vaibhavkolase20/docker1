@@ -27,4 +27,12 @@
                   docker-compose --version
 
 
+# To delate all stop containers
+                  docker container prune -f
+
+# To delete all images
+                  docker rmi -f $(docker images -q)
+
+
+
                   
