@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Docker Hub Details
+DOCKER_USERNAME="vaibhbav"
+REPO_NAME="ram"
+TAG="v1"
+
+# Container Details
+CONTAINER_NAME="ram_container"
+PORT="8080"
+
+echo "Step 1: Building Docker Image"
+docker build -t $REPO_NAME:$TAG .
+
+echo "Step 2: Tagging Image for Docker Hub"
+docker tag $REPO_NAME:$TAG $DOCKER_USERNAME/$REPO_NAME:$TAG
+
+echo "Step 3: Stopping Old Container (if exists)"
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME
+
+echo "Step 4: Running New Container"
+docker run -d -p $PORT:80 --name $CONTAINER_NAME $REPO_NAME:$TAG
+
+echo "Step 5: Docker Hub Login"
+docker login
+
+echo "Step 6: Pushing Image to Docker Hub"
+docker push $DOCKER_USERNAME/$REPO_NAME:$TAG
+
+echo "✅ Deployment Completed Successfully"
